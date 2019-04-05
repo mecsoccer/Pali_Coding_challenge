@@ -6,9 +6,11 @@ function ingredientCount(mealObject) {
     let i = 1;
     while (i > 0) {
       const ingredient = item[`strIngredient${i}`];
-      if (ingredient === '' || ingredient === null || !ingredient) {
+      if (ingredient === '' || ingredient === null) {
         i -= 1;
         break;
+      } else if (!item.idMeal) {
+        return item;
       } else {
         i += 1;
       }
@@ -26,9 +28,21 @@ function getMealsById(mealIdArray) {
       .then((json) => {
         const { meals } = json;
         const [arrayMeals] = meals;
-        return arrayMeals;
+        if (meals === null) {
+          Promise.reject(id);
+        } else {
+          return arrayMeals;
+        }
+      })
+      .catch(() => id);
+  }))
+    .then((array) => {
+      const invalidIds = [];
+      array.forEach((meal) => {
+        if (!meal.idMeal) invalidIds.push(meal);
       });
-  }));
+      return (invalidIds.length > 0) ? { error: true, invalidIds } : array;
+    });
 }
 
 // sorts a list numerically returning the least number
@@ -43,19 +57,27 @@ function mealIdEndpoint(req, res) {
 
   getMealsById(mealIdList)
     .then((mealsList) => {
-      ingredientCount(mealsList)
-        .then((ingredientsNoArray) => {
-          const leastIngredientNo = computeLeast(ingredientsNoArray);
-          return ingredientsNoArray.filter(array => array[1] === leastIngredientNo);
-        })
-        .then((results) => {
-          const arrayOfIds = [];
-          results.forEach(result => arrayOfIds.push(result[0]));
-          return arrayOfIds;
-        })
-        .then((data) => {
-          res.status(200).json(data);
-        });
+      if (!mealsList.length) {
+        const { invalidIds } = mealsList;
+        res.status(422).json({ error: `the following ids ( ${invalidIds} ) do not match any meals`});
+      } else {
+        ingredientCount(mealsList)
+          .then((ingredientsNoArray) => {
+            const leastIngredientNo = computeLeast(ingredientsNoArray);
+            return ingredientsNoArray.filter(array => array[1] === leastIngredientNo);
+          })
+          .then((results) => {
+            const arrayOfIds = [];
+            results.forEach(result => arrayOfIds.push(Number(result[0])));
+            return arrayOfIds;
+          })
+          .then((data) => {
+            res.status(200).json(data);
+          });
+      }
+    })
+    .catch(() => {
+      res.status(500).send('internal server error');
     });
 }
 

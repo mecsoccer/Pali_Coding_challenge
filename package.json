@@ -4,7 +4,8 @@
   "description": "A NodeJS web service that accepts a list of meal IDs and returns the ID of the meal that requires the least number of ingredients to prepare. Makes use of TheMealDb.com API.",
   "main": "index.js",
   "scripts": {
-    "devstart": "nodemon --exec babel-node index.js"
+    "devstart": "nodemon --exec babel-node index.js",
+    "test": "nyc npx mocha ./test/**/*.js --require @babel/register"
   },
   "repository": {
     "type": "git",
@@ -34,9 +35,11 @@
     "node-fetch": "^2.3.0"
   },
   "devDependencies": {
+    "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "nyc": "^13.3.0"
   }
 }
