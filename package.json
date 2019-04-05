@@ -1,0 +1,42 @@
+{
+  "name": "pali_coding_challenge",
+  "version": "1.0.0",
+  "description": "A NodeJS web service that accepts a list of meal IDs and returns the ID of the meal that requires the least number of ingredients to prepare. Makes use of TheMealDb.com API.",
+  "main": "index.js",
+  "scripts": {
+    "devstart": "nodemon --exec babel-node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mecsoccer/Pali_Coding_challenge.git"
+  },
+  "keywords": [
+    "es6",
+    "nodejs"
+  ],
+  "author": "Jaachimmma Onyenze",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mecsoccer/Pali_Coding_challenge/issues"
+  },
+  "homepage": "https://github.com/mecsoccer/Pali_Coding_challenge#readme",
+  "dependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/register": "^7.0.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "custom-env": "^1.0.0",
+    "express": "^4.16.4",
+    "mocha": "^6.0.2",
+    "morgan": "^1.9.1",
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "nodemon": "^1.18.10"
+  }
+}
