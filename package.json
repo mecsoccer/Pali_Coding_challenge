@@ -4,8 +4,8 @@
   "description": "A NodeJS web service that accepts a list of meal IDs and returns the ID of the meal that requires the least number of ingredients to prepare. Makes use of TheMealDb.com API.",
   "main": "./src/index.js",
   "scripts": {
-    "start": "node ./build/index.js",
-    "devstart": "nodemon --exec babel-node ./src/index.js",
+    "start": "babel-node index.js",
+    "devstart": "nodemon --exec babel-node index.js",
     "test": "nyc npx mocha ./test/**/*.js --require @babel/register",
     "build-babel": "babel --out-dir ./build --source-maps --copy-files ./src",
     "build": "mkdir build && npm run build-babel",
