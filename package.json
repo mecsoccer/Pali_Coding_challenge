@@ -8,7 +8,8 @@
     "devstart": "nodemon --exec babel-node ./src/index.js",
     "test": "nyc npx mocha ./test/**/*.js --require @babel/register",
     "build-babel": "babel --out-dir ./build --source-maps --copy-files ./src",
-    "build": "mkdir build && npm run build-babel"
+    "build": "mkdir build && npm run build-babel",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
