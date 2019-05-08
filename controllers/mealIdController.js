@@ -6,17 +6,6 @@ function ingredientCount(mealsArray) {
     const ingrFields = Object.keys(item).filter(field => /^strIngredient\d+$/.test(field));
     const ingredients = ingrFields.filter(field => !/^$/.test(item[field]));
     return [item.idMeal, ingredients.length];
-    /* let i = 1;
-    while (i > 0) {
-      const ingredient = item[`strIngredient${i}`];
-      if (ingredient === '' || ingredient === null) {
-        i -= 1;
-        break;
-      } else {
-        i += 1;
-      }
-    }
-    return [item.idMeal, i]; */
   }));
 }
 
