@@ -1,21 +1,22 @@
 import fetch from 'node-fetch';
 
 // returns no. of ingredients for each meal ID
-function ingredientCount(mealObject) {
-  return Promise.all(mealObject.map((item) => {
-    let i = 1;
+function ingredientCount(mealsArray) {
+  return Promise.all(mealsArray.map((item) => {
+    const ingrFields = Object.keys(item).filter(field => /^strIngredient\d+$/.test(field));
+    const ingredients = ingrFields.filter(field => !/^$/.test(item[field]));
+    return [item.idMeal, ingredients.length];
+    /* let i = 1;
     while (i > 0) {
       const ingredient = item[`strIngredient${i}`];
       if (ingredient === '' || ingredient === null) {
         i -= 1;
         break;
-      } else if (!item.idMeal) {
-        return item;
       } else {
         i += 1;
       }
     }
-    return [item.idMeal, i];
+    return [item.idMeal, i]; */
   }));
 }
 
@@ -28,11 +29,7 @@ function getMealsById(mealIdArray) {
       .then((json) => {
         const { meals } = json;
         const [arrayMeals] = meals;
-        if (meals === null) {
-          Promise.reject(id);
-        } else {
-          return arrayMeals;
-        }
+        /* istanbul ignore next */return (meals === null) ? Promise.reject(id) : arrayMeals;
       })
       .catch(() => id);
   }))
@@ -41,15 +38,8 @@ function getMealsById(mealIdArray) {
       array.forEach((meal) => {
         if (!meal.idMeal) invalidIds.push(meal);
       });
-      return (invalidIds.length > 0) ? { error: true, invalidIds } : array;
+      return (invalidIds.length) ? { error: true, invalidIds } : array;
     });
-}
-
-// sorts a list numerically returning the least number
-function computeLeast(data) {
-  const numberList = data.map(item => item[1]);
-  numberList.sort((a, b) => { return a - b; });
-  return numberList[0];
 }
 
 function mealIdEndpoint(req, res) {
@@ -57,14 +47,11 @@ function mealIdEndpoint(req, res) {
 
   getMealsById(mealIdList)
     .then((mealsList) => {
-      if (!mealsList.length) {
-        const { invalidIds } = mealsList;
-        res.status(422).json({ error: `the following ids ( ${invalidIds} ) do not match any meals`});
-      } else {
+      if (mealsList.length) {
         ingredientCount(mealsList)
-          .then((ingredientsNoArray) => {
-            const leastIngredientNo = computeLeast(ingredientsNoArray);
-            return ingredientsNoArray.filter(array => array[1] === leastIngredientNo);
+          .then((ingredientsNumArray) => {
+            const leastIngredientNum = Math.min(...ingredientsNumArray.map(item => item[1]));
+            return ingredientsNumArray.filter(array => array[1] === leastIngredientNum);
           })
           .then((results) => {
             const arrayOfIds = [];
@@ -74,10 +61,13 @@ function mealIdEndpoint(req, res) {
           .then((data) => {
             res.status(200).json(data);
           });
+      } else {
+        const { invalidIds } = mealsList;
+        res.status(422).json({ error: `the following ids ( ${invalidIds} ) do not match any meals`});
       }
     })
     .catch(() => {
-      res.status(500).send('internal server error');
+      /* istanbul ignore next */res.status(500).send('error occured');
     });
 }
 
