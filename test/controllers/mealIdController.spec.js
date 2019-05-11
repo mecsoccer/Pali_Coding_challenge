@@ -64,7 +64,7 @@ describe('Tests', () => {
         .send(emptyList)
         .end((err, res) => {
           expect(err).to.equal(null);
-          expect(res.status).to.equal(422);
+          expect(res.status).to.equal(400);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('error').that.is.a('string');
           done();
@@ -76,7 +76,7 @@ describe('Tests', () => {
         .send(nonArray)
         .end((err, res) => {
           expect(err).to.equal(null);
-          expect(res.status).to.equal(422);
+          expect(res.status).to.equal(400);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('error').that.is.a('string');
           done();
@@ -88,7 +88,7 @@ describe('Tests', () => {
         .send(singleNumberArray)
         .end((err, res) => {
           expect(err).to.equal(null);
-          expect(res.status).to.equal(422);
+          expect(res.status).to.equal(400);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('error').that.is.a('string');
           done();

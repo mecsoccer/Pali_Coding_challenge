@@ -70,17 +70,17 @@ OR
 
 
 ## Technologies Used
-* Nodejs
-* Es6
-* Docker
-* Express
-* Babel
-* Eslint (Airbnb--style guide)
+* [Nodejs](https://nodejs.org/en/)
+* [Es6](https://es6.io/)
+* [Docker](https://www.docker.com)
+* [Express](https://expressjs.com)
+* [Babel](https://babeljs.io)
+* [Eslint](https://eslint.org) (Airbnb--style guide)
 
 ## Testing Tools
-* Mocha - A javascript test framework
-* Chai - Assertion library
-* nyc - A reporting tool
+* [Mocha](https://mochajs.org) - A javascript test framework
+* [Chai](https://www.chaijs.com) - Assertion library
+* [nyc](https://www.npmjs.com/package/nyc) - A reporting tool
 
 ## How to Test
 ```
